@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vocab Vault — Classroom Word Games, Crosswords, Riddles &amp; Pictionary</title>
+<meta name="description" content="Vocab Vault: a teacher's digital hub of vocabulary games — riddles, crosswords, Pictionary, word search, hangman, scramble, quizzes and more across linguistics, literature and social science subjects.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🗝️</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700;9..144,900&family=IBM+Plex+Mono:wght@400;600&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/styles.css">
+</head>
+<body>
+
+<header class="masthead">
+  <div class="masthead-inner">
+    <a href="#/" class="brand" aria-label="Vocab Vault home">
+      <span class="brand-key">🗝️</span>
+      <span>
+        <span class="brand-name">Vocab Vault</span>
+        <span class="brand-sub">// Instructor Hub</span>
+      </span>
+    </a>
+    <nav class="topnav">
+      <a href="#/">Subjects</a>
+      <a href="#/bank" id="navBank">Word Bank</a>
+      <button type="button" class="linkish" id="teamsToggle">Team Scores</button>
+    </nav>
+  </div>
+</header>
+
+<div id="teamsBar" class="teams-bar" hidden></div>
+
+<main id="app" class="container" tabindex="-1"></main>
+
+<footer class="footer">
+  Vocab Vault Project &bull; Designed for Interactive ELT Classrooms
+</footer>
+
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+<!-- Word banks: one file per subject -->
+<script src="/data/sociolinguistics.js"></script>
+<script src="/data/eap.js"></script>
+<script src="/data/esp.js"></script>
+<script src="/data/applied-linguistics.js"></script>
+<script src="/data/semantics-pragmatics.js"></script>
+<script src="/data/syntax-grammar.js"></script>
+<script src="/data/discourse-analysis.js"></script>
+<script src="/data/psycholinguistics.js"></script>
+<script src="/data/literature.js"></script>
+<script src="/data/political-science.js"></script>
+
+<!-- Engine + games -->
+<script src="/assets/core.js"></script>
+<script src="/assets/app.js"></script>
+</body>
+</html>

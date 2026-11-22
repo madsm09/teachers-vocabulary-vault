@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vocab Vault - Teacher Digital Hub</title>
+<style>
+    :root {
+        --primary: #1b263b;
+        --secondary: #415a77;
+        --accent: #3a86ff;
+        --pink: #ff4d6d;
+        --bg: #f8fafc;
+        --card-bg: #ffffff;
+        --text: #1e293b;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: var(--bg);
+        color: var(--text);
+        margin: 0;
+        padding: 0;
+        line-height: 1.6;
+    }
+    header {
+        background-color: var(--primary);
+        color: white;
+        padding: 2rem 1rem;
+        text-align: center;
+        border-bottom: 4px solid var(--accent);
+    }
+    header h1 {
+        margin: 0;
+        font-size: 1.8rem;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+    }
+    header p {
+        margin: 0.5rem 0 0 0;
+        color: #94a3b8;
+        font-size: 0.95rem;
+    }
+    .container {
+        max-width: 700px;
+        margin: 2rem auto;
+        padding: 0 1rem;
+    }
+    .card {
+        background: var(--card-bg);
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+        border-top: 4px solid var(--secondary);
+    }
+    .card h2 {
+        margin-top: 0;
+        color: var(--primary);
+        font-size: 1.25rem;
+        border-bottom: 2px solid #e2e8f0;
+        padding-bottom: 0.5rem;
+    }
+    label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+        color: #334155;
+    }
+    select {
+        width: 100%;
+        padding: 0.75rem;
+        border-radius: 8px;
+        border: 2px solid #cbd5e1;
+        font-size: 1rem;
+        background-color: #fff;
+        margin-bottom: 1rem;
+        font-family: inherit;
+    }
+    .btn {
+        display: inline-block;
+        background-color: var(--accent);
+        color: white;
+        padding: 0.75rem 1.5rem;
+        border-radius: 8px;
+        border: none;
+        font-weight: bold;
+        font-size: 1rem;
+        cursor: pointer;
+        width: 100%;
+        text-align: center;
+        transition: background 0.2s;
+    }
+    .btn:hover {
+        background-color: #2563eb;
+    }
+    .output-section {
+        margin-top: 1.5rem;
+        display: none;
+    }
+    .riddle-item {
+        background: #f1f5f9;
+        border-left: 4px solid var(--accent);
+        padding: 1rem;
+        margin-bottom: 1rem;
+        border-radius: 4px;
+    }
+    .riddle-item h4 {
+        margin: 0 0 0.5rem 0;
+        color: var(--primary);
+        font-size: 1rem;
+    }
+    .riddle-item p {
+        margin: 0;
+        font-size: 0.95rem;
+    }
+    .hint {
+        font-size: 0.85rem;
+        color: #64748b;
+        margin-top: 0.5rem;
+        font-style: italic;
+    }
+    .game-mode {
+        background: #fff0f3;
+        border: 2px solid var(--pink);
+        padding: 1rem;
+        border-radius: 8px;
+        margin-top: 1rem;
+    }
+    .game-mode h3 {
+        margin-top: 0;
+        color: #9b2226;
+        font-size: 1.1rem;
+    }
+    footer {
+        text-align: center;
+        padding: 2rem;
+        font-size: 0.85rem;
+        color: #64748b;
+    }
+</style>
+</head>
+<body>
+
+<header>
+    <h1>Vocab Vault // Instructor Hub</h1>
+    <p>Digital Classroom Resource &amp; Interactive Game Selector</p>
+</header>
+
+<div class="container">
+    <!-- SELECTOR CARD -->
+    <div class="card">
+        <h2>Select Academic Discipline</h2>
+        <label for="subjectSelect">Choose your subject area:</label>
+        <select id="subjectSelect">
+            <option value="">-- Select Subject --</option>
+            <option value="sociolinguistics">Sociolinguistics</option>
+            <option value="eap">EAP (English for Academic Purposes)</option>
+            <option value="esp">ESP (English for Specific Purposes)</option>
+            <option value="applied-linguistics">Applied Linguistics</option>
+            <option value="semantics-pragmatics">Semantics and Pragmatics</option>
+            <option value="phonology-morphology">Phonology and Morphology</option>
+            <option value="literature">Literature</option>
+            <option value="political-science">Political Science</option>
+            <option value="sociology">Sociology</option>
+        </select>
+        <button class="btn" onclick="loadContent()">Load Digital Hub &amp; Riddles</button>
+    </div>
+
+    <!-- CONTENT DISPLAY CARD -->
+    <div id="displayCard" class="card output-section">
+        <h2 id="subjectTitle">Subject Hub</h2>
+        
+        <div class="game-mode">
+            <h3>Recommended Classroom Game</h3>
+            <p id="gameRecommendation">Select a subject to view recommended activities.</p>
+        </div>
+
+        <h3 style="margin-top: 1.5rem; color: var(--primary);">Ready-Made Riddle Clues (Classroom Deck)</h3>
+        <div id="riddlesContainer">
+            <!-- Dynamic Riddles Here -->
+        </div>
+    </div>
+</div>
+
+<footer>
+    Vocab Vault Project &bull; Designed for Interactive ELT Classrooms
+</footer>
+
+<script>
+const data = {
+    "sociolinguistics": {
+        title: "Sociolinguistics Hub",
+        game: "Game Mode: The 45-Second Red String Declassification Sprint. Students match riddle cards pinned on the board to target linguistic terms using colored yarn.",
+        riddles: [
+            {term: "Colonialism", riddle: "I am the historic imposition of a dominant tongue by foreign conquerors, stripping away indigenous voices.", hint: "Associated with imperial expansion."},
+            {term: "Marginalisation", riddle: "I push certain linguistic groups to the societal fringes, labeling their native speech patterns as inferior.", hint: "Relegating minority speakers to secondary status."},
+            {term: "Pidgin", riddle: "I am a minimal, contact-born auxiliary speech system with no native speakers, used for trade.", hint: "Simplified hybrid trade tongue."},
+            {term: "Creole", riddle: "I grew up from a pidgin, gained native speakers, expanded my grammar, and became a mother tongue.", hint: "Evolutionary leap to primary language."},
+            {term: "Dialect", riddle: "I am a regional or social variety of a language, distinguished by unique vocabulary and grammar.", hint: "How speech varies geographically."},
+            {term: "Code-switching", riddle: "I shift shapes mid-sentence depending on who is in the room, seamlessly alternating between two styles.", hint: "Fluid alternation between codes."},
+            {term: "Lingua Franca", riddle: "I serve as the bridge language adopted across different native speakers to enable commerce.", hint: "A common shared trade language."},
+            {term: "Language Attitudes", riddle: "I measure how society evaluates speech—judging people simply by their accent or vocabulary.", hint: "Prejudices attached to speech varieties."},
+            {term: "Language Shift", riddle: "I represent the slow generational abandonment of an ancestral tongue in favor of a dominant majority.", hint: "Community-wide replacement."},
+            {term: "Linguistic Imperialism", riddle: "I am the deliberate, structural dominance of one language globally through cultural and political power.", hint: "Core language dominating periphery tongues."}
+        ]
+    },
+    "eap": {
+        title: "EAP (English for Academic Purposes) Hub",
+        game: "Game Mode: The Research Dossier Challenge. Students declassify academic discourse terms under timed pressure.",
+        riddles: [
+            {term: "Citation", riddle: "I give formal credit to original authors within academic texts, preventing plagiarism.", hint: "References within research papers."},
+            {term: "Paraphrase", riddle: "I restate external source ideas in entirely new words while preserving the original meaning.", hint: "Rewriting text in your own voice."},
+            {term: "Academic Register", riddle: "I am the formal, objective tone and vocabulary style required in university research writing.", hint: "Formal scholarly voice."},
+            {term: "Thesis Statement", riddle: "I am the central arguable claim guiding an entire academic essay or research paper.", hint: "Core argument of a paper."},
+            {term: "Literature Review", riddle: "I critically evaluate existing scholarly research and sources surrounding a specific topic.", hint: "Survey of prior academic studies."},
+            {term: "Methodology", riddle: "I describe the systematic procedures and research design used to gather data.", hint: "How a study was conducted."},
+            {term: "Empirical Evidence", riddle: "I am information acquired through hands-on observation, experiments, and measurable data.", hint: "Data-driven proof."},
+            {term: "Abstract", riddle: "I am the brief, high-level summary positioned at the very beginning of a research paper.", hint: "Summary snapshot of a study."},
+            {term: "Critical Analysis", riddle: "I look beyond surface facts to evaluate arguments, uncover biases, and assess validity.", hint: "Deep academic scrutiny."},
+            {term: "Synthesis", riddle: "I combine multiple different source ideas to build a brand new cohesive academic argument.", hint: "Blending multiple sources together."}
+        ]
+    },
+    "esp": {
+        title: "ESP (English for Specific Purposes) Hub",
+        game: "Game Mode: The Industry Simulation Sprint. Students match professional jargon to specialized workplace scenarios.",
+        riddles: [
+            {term: "Needs Analysis", riddle: "I investigate the precise linguistic and communicative demands of a specific profession before course design.", hint: "Assessing learner requirements."},
+            {term: "Target Situation", riddle: "I represent the exact real-world professional context where learners will use English.", hint: "The workplace environment."},
+            {term: "Authentic Materials", riddle: "I am real-world professional text or media not originally created for language learners.", hint: "Unadapted workplace documents."},
+            {term: "Lexical Set", riddle: "I am a group of specialized technical terms used exclusively within a specific industry or trade.", hint: "Industry-specific vocabulary."},
+            {term: "Genre Analysis", riddle: "I study the communicative purpose, structure, and conventions of workplace documents like medical charts or legal briefs.", hint: "Examining professional text types."},
+            {term: "Communication Strategy", riddle: "I am the specialized verbal tactic used by professionals to manage negotiations or technical troubleshooting.", hint: "Workplace communication tactics."},
+            {term: "Linguistic Register", riddle: "I am the specific level of formality and specialized jargon required in aviation, medical, or legal fields.", hint: "Professional speech style."},
+            {term: "Simulated Task", riddle: "I am a role-play or hands-on practice activity mirroring exact on-the-job scenarios.", hint: "Practicing real work duties."},
+            {term: "Operational Fluency", riddle: "I measure how quickly and accurately a professional communicates during high-stakes tasks.", hint: "Fast, precise work communication."},
+            {term: "Domain Expertise", riddle: "I combine technical field knowledge with the precise English needed to execute it.", hint: "Subject-matter professional skill."}
+        ]
+    },
+    "applied-linguistics": {
+        title: "Applied Linguistics Hub",
+        game: "Game Mode: The Linguistic Problem-Solving Lab. Students decode real-world language acquisition and teaching challenges.",
+        riddles: [
+            {term: "Second Language Acquisition", riddle: "I study how human beings learn an additional language after their native mother tongue.", hint: "SLA learning process."},
+            {term: "Interlanguage", riddle: "I am the systematic, evolving linguistic system constructed by a second language learner.", hint: "Learner's intermediate grammar system."},
+            {term: "Error Analysis", riddle: "I examine learner mistakes systematically to understand underlying cognitive language strategies.", hint: "Studying patterns in student errors."},
+            {term: "Task-Based Learning", riddle: "I structure language lessons around completing meaningful, real-world communicative tasks.", hint: "Learning through doing tasks."},
+            {term: "Bilingualism", riddle: "I represent the fluent use and command of two distinct languages by an individual or community.", hint: "Speaking two languages."},
+            {term: "Fossilization", riddle: "I occur when incorrect language habits become permanently fixed in a learner's interlanguage.", hint: "Permanent linguistic error habits."},
+            {term: "Communicative Competence", riddle: "I go beyond mere grammar to include social rules of language use in context.", hint: "Knowing how to communicate socially."},
+            {term: "Input Hypothesis", riddle: "I argue that learners acquire language best when exposed to messages slightly above their current level.", hint: "Krashen's comprehensible input."},
+            {term: "Corpus Linguistics", riddle: "I analyze massive digital archives of real human speech and writing using software.", hint: "Computerized text collections."},
+            {term: "Language Policy", riddle: "I am government or institutional legislation dictating which languages are used officially.", hint: "Official language laws."}
+        ]
+    },
+    "semantics-pragmatics": {
+        title: "Semantics and Pragmatics Hub",
+        game: "Game Mode: The Meaning Deconstruction Challenge. Students crack literal meanings versus hidden contextual intentions.",
+        riddles: [
+            {term: "Denotation", riddle: "I am the strict, dictionary-defined literal meaning of a word stripped of all emotion.", hint: "Literal dictionary definition."},
+            {term: "Connotation", riddle: "I carry the emotional, cultural, or social associations attached to a word beyond its literal meaning.", hint: "Emotional undertones of words."},
+            {term: "Speech Act", riddle: "I am an utterance that performs an action, such as promising, apologizing, or ordering.", hint: "Doing things with words."},
+            {term: "Presupposition", riddle: "I am the underlying assumption that a speaker takes for granted as true before making a statement.", hint: "Implicit background beliefs."},
+            {term: "Implicature", riddle: "I am what a speaker means or suggests indirectly without stating it explicitly.", hint: "Reading between the lines."},
+            {term: "Deixis", riddle: "I rely entirely on context to be understood—words like 'here', 'now', or 'that' shift meaning constantly.", hint: "Context-dependent pointing words."},
+            {term: "Semantic Feats", riddle: "I break down word meanings into binary components like [+/adult] or [+/animate].", hint: "Meaning feature breakdown."},
+            {term: "Politeness Principle", riddle: "I am the social rule governing how speakers manage face-saving acts during conversation.", hint: "Social tact in speaking."},
+            {term: "Ambiguity", riddle: "I happen when a phrase or sentence has two or more completely different possible meanings.", hint: "Open to multiple interpretations."},
+            {term: "Context", riddle: "I am the situational and social background environment that determines what an utterance actually means.", hint: "The surrounding environment of speech."}
+        ]
+    },
+    "phonology-morphology": {
+        title: "Phonology and Morphology Hub",
+        game: "Game Mode: The Sound & Structure Decoding Lab. Students analyze speech sounds and word formation rules.",
+        riddles: [
+            {term: "Phoneme", riddle: "I am the smallest unit of sound in a language that can change meaning (like /p/ vs /b/).", hint: "Distinct sound unit."},
+            {term: "Morpheme", riddle: "I am the smallest meaningful unit of language, incapable of being broken down further.", hint: "Smallest meaningful word part."},
+            {term: "Allophone", riddle: "I am a predictable phonetic variant of a phoneme that doesn't change meaning (like aspirated /p/).", hint: "Sound variations of the same letter."},
+            {term: "Free Morpheme", riddle: "I can stand alone as an independent word without needing any attachments.", hint: "Standalone root word."},
+            {term: "Bound Morpheme", riddle: "I must be attached to a root word to convey meaning and cannot stand alone.", hint: "Prefixes and suffixes."},
+            {term: "Minimal Pair", riddle: "We are two words differing by only one single sound in the exact same position (e.g., 'cat' / 'bat').", hint: "Comparing one sound difference."},
+            {term: "Derivational Morphology", riddle: "I create completely new words with different meanings or parts of speech (e.g., 'quick' to 'quickly').", hint: "Changing word class or meaning."},
+            {term: "Inflectional Morphology", riddle: "I modify words to show grammatical categories like tense or plural without changing meaning.", hint: "Adding plurals or verb tenses."},
+            {term: "Allomorph", riddle: "I am a variant form of a morpheme (like the plural sounds /s/, /z/, and /ɪz/).", hint: "Different phonemic shapes of a suffix."},
+            {term: "Phonetics", riddle: "I am the physical study of human speech sounds, focusing on articulation and acoustics.", hint: "Physical acoustic properties of speech."}
+        ]
+    },
+    "literature": {
+        title: "Literature Hub",
+        game: "Game Mode: The Literary Deconstruction Chamber. Students analyze narrative tropes, themes, and poetic devices.",
+        riddles: [
+            {term: "Metaphor", riddle: "I make a direct comparison between two unrelated things without using 'like' or 'as'.", hint: "Figurative direct comparison."},
+            {term: "Symbolism", riddle: "I use a concrete physical object or color to represent a deeper abstract concept or theme.", hint: "Objects representing big ideas."},
+            {term: "Motif", riddle: "I am a recurring image, idea, or symbol that develops the overarching theme of a narrative.", hint: "Repeating literary pattern."},
+            {term: "Irony", riddle: "I occur when there is a sharp contrast between expectations and reality.", hint: "Unexpected situational twists."},
+            {term: "Protagonist", riddle: "I am the central main character driving the narrative conflict forward.", hint: "The main hero or lead."},
+            {term: "Antagonist", riddle: "I create the core opposition, conflict, and obstacles facing the main hero.", hint: "The opposing force or villain."},
+            {term: "Allegory", riddle: "I am an entire narrative story that holds a hidden political, moral, or philosophical meaning.", hint: "A story with a hidden moral lesson."},
+            {term: "Foreshadowing", riddle: "I drop subtle hints or clues early in a story about events that will happen later.", hint: "Clues about future plot points."},
+            {term: "Tone", riddle: "I reflect the author's personal attitude toward the subject matter or audience.", hint: "Author's emotional stance."},
+            {term: "Theme", riddle: "I am the underlying universal message or central philosophical insight of a literary work.", hint: "The core moral of the story."}
+        ]
+    },
+    "political-science": {
+        title: "Political Science Hub",
+        game: "Game Mode: The Institutional Dossier Challenge. Students solve governance riddles within 45 seconds to unlock classified state files.",
+        riddles: [
+            {term: "Sovereignty", riddle: "I hold supreme, absolute authority over a territory, answering to no higher external power.", hint: "Ultimate state autonomy."},
+            {term: "Bureaucracy", riddle: "I am the vast machinery of unelected officials, rigid rules, and red tape keeping administration running.", hint: "Hierarchical administrative apparatus."},
+            {term: "Dictatorship", riddle: "I am a system of government where absolute, unchecked power rests in a single ruler suppressing opposition.", hint: "Zero democratic accountability."},
+            {term: "Authoritarianism", riddle: "I prioritize strict state control and obedience above individual civil liberties, limiting pluralism.", hint: "Centralized power with minimal freedoms."},
+            {term: "Democracy", riddle: "I am the system where power rests with the people, exercised through freely elected representatives.", hint: "Government by citizen ballot and voice."},
+            {term: "Legitimacy", riddle: "I am the rightful recognition and moral acceptance of a governing authority's right to rule.", hint: "Public consent and perceived rightfulness."},
+            {term: "Hegemony", riddle: "I am the cultural and ideological dominance of one social class making their worldview seem natural.", hint: "Leadership achieved through ideological consent."},
+            {term: "State", riddle: "I am the organized political entity possessing a monopoly on the legitimate use of physical force.", hint: "The ultimate sovereign community."},
+            {term: "Ideology", riddle: "I am a coherent set of political beliefs and worldviews explaining how society should work.", hint: "Belief systems driving political movements."},
+            {term: "Civil Society", riddle: "I represent the sphere of voluntary social organizations and NGOs standing between individual and state.", hint: "Non-state civic associations."}
+        ]
+    },
+    "sociology": {
+        title: "Sociology Hub",
+        game: "Game Mode: The Social Structure Investigation. Students examine societal norms, institutions, and human behavior.",
+        riddles: [
+            {term: "Socialization", riddle: "I am the lifelong process through which individuals learn culture, norms, and values of society.", hint: "Learning how to fit into society."},
+            {term: "Social Stratification", riddle: "I represent the hierarchical ranking of people into socioeconomic tiers based on wealth and power.", hint: "Social class inequality layers."},
+            {term: "Norms", riddle: "I am the unwritten rules and expected standards of behavior governing social life.", hint: "Societal rules of conduct."},
+            {term: "Culture", riddle: "I comprise the shared beliefs, values, customs, arts, and behaviors of a particular group.", hint: "Shared lifestyle of a society."},
+            {term: "Social Institution", riddle: "I am an established system of social order governing behavior (like family, religion, education).", hint: "Core organized pillars of society."},
+            {term: "Deviance", riddle: "I am any behavior that violates cultural norms and institutional expectations.", hint: "Breaking social rules."},
+            {term: "Agency", riddle: "I am the capacity of individuals to act independently and make their own free choices.", hint: "Personal free will and action."},
+            {term: "Social Mobility", riddle: "I measure the movement of individuals or groups between different social strata.", hint: "Moving up or down social classes."},
+            {term: "Anomie", riddle: "I am a condition of instability resulting from a breakdown of social standards and values.", hint: "Normlessness and social instability."},
+            {term: "Subculture", riddle: "I am a cultural group within a larger culture that has distinct values differing from the mainstream.", hint: "Distinct smaller cultural groups."}
+        ]
+    }
+};
+
+function loadContent() {
+    const subject = document.getElementById('subjectSelect').value;
+    const display = document.getElementById('displayCard');
+    
+    if (!subject) {
+        alert("Please select a subject first!");
+        return;
+    }
+    
+    const info = data[subject];
+    document.getElementById('subjectTitle').innerText = info.title;
+    document.getElementById('gameRecommendation').innerText = info.game;
+    
+    let html = '';
+    info.riddles.forEach((item, index) => {
+        html += `
+            <div class="riddle-item">
+                <h4>Case ${index < 9 ? '0' + (index + 1) : (index + 1)} // Target: ${item.term}</h4>
+                <p><strong>Riddle:</strong> "${item.riddle}"</p>
+                <div class="hint">Coded Hint: ${item.hint}</div>
+            </div>
+        `;
+    });
+    
+    document.getElementById('riddlesContainer').innerHTML = html;
+    display.style.display = 'block';
+}
+</script>
+
+</body>
+</html>
